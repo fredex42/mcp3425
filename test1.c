@@ -65,6 +65,7 @@ struct device_return read_data(int file) {
   struct device_return r;
   memset(&r, 0, sizeof(struct device_return));
   memcpy(&r.value, &buf[0], 2);
+  r.value = ntohs(r.value);
   memcpy(&r.config, &buf[2], 1);
   return r;
 }
@@ -88,7 +89,7 @@ int main(int argc, char *argv) {
   while(1){
     initiate_conversion(file);
     struct device_return r = read_data(file);
-    fprintf(stdout, "Got data 0x%04x (or 0x%04x?) and config 0x%02x\n", r.value, ntohs(r.value), r.config);
+    fprintf(stdout, "Got data 0x%04x and config 0x%02x\n", r.value, r.config);
     usleep(1000000);
   } 
 }
